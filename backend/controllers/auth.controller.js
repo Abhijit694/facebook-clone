@@ -17,7 +17,7 @@ export const registerUser = async (req,res) => {
                 message: "Email id taken try another email id"
             })
         }
-        const hashedPassword = await bcrypt.hash(10,password)
+        const hashedPassword = await bcrypt.hash(password,10)
         const newUser = new User({
             firstname,
             lastname,
