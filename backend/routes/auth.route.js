@@ -4,3 +4,6 @@ import { registerUser } from "../controllers/auth.controller.js"
 const router = express.Router()
 
 router.post('/reigster',registerUser)
+
+
+export default router;
