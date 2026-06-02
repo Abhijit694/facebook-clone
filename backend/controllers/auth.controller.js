@@ -86,3 +86,28 @@ export const loginUser = async (req,res) => {
         })
     }
 }
+
+export const logoutUser = (_,res) => {
+    try {
+        // here we can use clearcookie() for clearing the cookie
+        return res.status(200).cookie(
+            "token",
+            "",
+            {
+                maxAge: 0,
+                httpOnly: true,
+                sameSite: "strict"
+            }
+        ).json({
+            success: true,
+            message: "Logged out successsfully"
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            messsage: "Internal server error",
+            error: error.message
+        })
+    }
+}
