@@ -5,7 +5,7 @@ const monthNames = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oc
 const SignUp = () => {
   return (
     <div className='h-screen flex flex-col gap-3 items-center justify-center'>
-      <h1 className='text-blue-600 text-5xl font-bold text-center'>Facelook</h1>
+      <h1 className='text-blue-700 text-5xl font-bold text-center'>Facelook</h1>
       <div className='bg-white px-3 py-1 rounded-lg shadow-md w-full md:max-w-[450px] mx-1 md:mx-0'>
         <h2 className='text-xl font-semibold text-gray-800 text-center mb-1'>Create a new account</h2>
         <hr className='mb-2 text-gray-200' />
@@ -71,7 +71,7 @@ const SignUp = () => {
           <input type="password" placeholder="Password" className="w-full p-2 border border-gray-300 rounder" name="password" />
           <input type="password" placeholder="Confirm password" className="w-full p-2 border border-gray-300 rounded" name="confirmPassword" />
 
-          <button className="bg-green-600 text-white text-base font-bold py-1 w-[200px] px-7 rounded hover:bg-green-700 mt-1 cursor-pointer">Sign Up</button>
+          <button className="bg-green-600 text-white text-base font-bold py-2 w-[200px] px-7 rounded-lg hover:bg-green-700 mt-1 cursor-pointer">Sign Up</button>
           <Link to={'/login'} className="text-blue-600 text-sm">Already have an account</Link>
 
         </form>
