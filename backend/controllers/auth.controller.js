@@ -4,11 +4,17 @@ import User from "../models/user.model.js";
 
 export const registerUser = async (req,res) => {
     try {
-        const { firstname,lastname,email,password,gender,dateOfBirth } = req.body
-        if(!firstname || !lastname || !email || !password){
+        const { firstname,lastname,email,password,gender,dateOfBirth,confirmPass } = req.body
+        if(!firstname || !lastname || !email || !password || !confirmPass){
             return res.status(400).json({
                 success: false,
                 message: "Something missing"
+            })
+        }
+        if(password !== confirmPass){
+            return res,status(400).json({
+                success: false,
+                message: "Password and confirm password didn't match"
             })
         }
         const existingUser = await User.findOne({ email })
