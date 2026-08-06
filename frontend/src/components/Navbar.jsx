@@ -1,0 +1,67 @@
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import logo from '/facebook-logo.png'
+import { FiSearch } from "react-icons/fi";
+import { GoHomeFill } from "react-icons/go";
+import { FaUserFriends } from "react-icons/fa";
+import { MdOutlineOndemandVideo } from "react-icons/md";
+import { BiStore } from "react-icons/bi";
+import { HiBell } from "react-icons/hi2";
+import { CgMenuGridR } from "react-icons/cg";
+import Avatar from 'react-avatar';
+
+const Navbar = () => {
+
+    const navigate = useNavigate()
+
+  return (
+    <nav className='bg-white dark:bg-[#262829] shadow fixed w-full z-50'>
+        <div className='px-4 py-2 md:py-0 flex justify-between items-center'>
+            {/* left section - logo + search */}
+            <div className='flex items-center space-x-3'>
+                <img
+                    src={logo}
+                    alt="logo"
+                    className='w-10 h-10 rounded-full object-fill cursor-pointer'
+                    onClick={() => navigate('/')}
+                />
+                <div className='relative flex items-center bg-[#f2f4f7] dark:bg-[#323233] p-2 rounded-full' >
+                    <label htmlFor="search">
+                        <FiSearch className='text-gray-400' />
+                    </label>
+                    <input type='text' id='search' placeholder='Search Facelook' className='dark:bg-[#323233] bg-[#f2f4f7] ml-2 outline-none text-sm w-28 md-w-45 text-black' />
+                </div>
+            </div>
+
+            {/* Center section - navigation icons */}
+            <div className='hidden md:flex space-x-8 mt-2'>
+                <button className='border-b-3 border-blue-600 w-[100px] flex items-center justify-center pb-3'>
+                    <GoHomeFill className='text-3xl text-blue-600 cursor-pointer hover:text-blue-700' />
+                </button>
+                <button className='w-[100px] flex items-center justify-center hover:bg-gray-200/10 rounded lg transition-all'>
+                    <MdOutlineOndemandVideo className='text-3xl text-gray-400 cursor-pointer' />
+                </button>
+                <button className='w-[100px] flex items-center justify-center hover:bg-gray-200/10 rounded lg transition-all'>
+                    <FaUserFriends className='text-3xl text-gray-400 cursor-pointer' />
+                </button>
+                <button className='w-[100px] flex items-center justify-center hover:bg-gray-200/10 rounded lg transition-all'>
+                    <BiStore className='text-3xl text-gray-400 cursor-pointer' />
+                </button>
+            </div>
+
+            {/* Right section - profile & icons */}
+            <div className='flex items-center justify-end space-x-4 w-[400px]'>
+                <div className='flex justify-center items-center bg-gray-300 size-9 rounded-full '>
+                    <CgMenuGridR className='text-2xl text-gray-900 cursor-pointer hover:text-blue-600 hidden md:block'/>
+                </div>
+                <div className='flex justify-center items-center bg-gray-300 size-9 rounded-full '>
+                    <HiBell className='text-2xl text-gray-900 cursor-pointer hover:text-blue-600 hidden md:block'/>
+                </div>
+                <Avatar facebookId="100008343750912" size="40" round={true} />
+            </div>
+        </div>
+    </nav>
+  )
+}
+
+export default Navbar
