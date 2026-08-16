@@ -106,13 +106,13 @@ export const logoutUser = (_,res) => {
             }
         ).json({
             success: true,
-            message: "Logged out successsfully"
+            message: "Logged out successfully"
         })
     } catch (error) {
         console.log(error);
         return res.status(500).json({
             success: false,
-            messsage: "Internal server error",
+            message: "Internal server error",
             error: error.message
         })
     }
