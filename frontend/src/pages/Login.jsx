@@ -1,9 +1,13 @@
+import { toast } from "@/components/ui/toast"
+import { setUser } from "@/redux/authSlice"
 import axios from "axios"
 import { useState } from "react"
+import { useDispatch } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 
 const Login = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -27,6 +31,11 @@ const Login = () => {
         }
       )
       if(response.data.success){
+        dispatch(setUser(response.data.user))
+        toast.add({
+          type: "success",
+          description: response.data.message
+        })
         navigate("/")
       }
     } catch (error) {
@@ -36,7 +45,7 @@ const Login = () => {
 
   const createAccHandler = (e) => {
     e.preventDefault()
-    navigate('/signup')
+    navigate('/register')
   }
   return (
     <div className='min-h-screen flex items-center justify-center px-4'>
@@ -46,7 +55,7 @@ const Login = () => {
           <h1 className='text-blue-600 text-6xl font-bold'>Facelook</h1>
         </div>
         {/* right side */}
-        <div className='bg-whte p-6 rounded-lg shadow-md md:w-[400px]'>
+        <div className='bg-white p-6 rounded-lg shadow-md md:w-[400px]'>
           <form onSubmit={loginHandler} className='flex flex-col items-center space-y-3'>
             <input
               type='text'
