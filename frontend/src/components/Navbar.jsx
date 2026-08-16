@@ -4,6 +4,7 @@ import logo from "/facebook-logo.png";
 import { FiSearch } from "react-icons/fi";
 import { GoHomeFill } from "react-icons/go";
 import { FaMoon, FaUserFriends } from "react-icons/fa";
+import { FaSun } from "react-icons/fa6";
 import { MdLogout, MdOutlineOndemandVideo } from "react-icons/md";
 import { BiStore } from "react-icons/bi";
 import { HiBell } from "react-icons/hi2";
@@ -15,13 +16,40 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "@/redux/themeSlice";
+import axios from "axios";
+import { toast } from "./ui/toast";
+import { setUser } from "@/redux/authSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const { theme } = useSelector(store => store.theme)
+
+
+  const logoutHandler = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8000/api/v1/auth/logout`)
+      if(res.data.success){
+        dispatch(setUser(null))
+        navigate("/login")
+        toast.add({
+          type: "success",
+          description: res.data.message
+        })
+      }
+    } catch (error) {
+      console.log(error)
+      toast.add({
+        type: "error",
+        description: res.data.message
+      })
+    }
+  }
 
   return (
     <nav className="bg-white dark:bg-[#262829] shadow fixed w-full z-50">
@@ -42,7 +70,7 @@ const Navbar = () => {
               type="text"
               id="search"
               placeholder="Search Facelook"
-              className="dark:bg-[#323233] bg-[#f2f4f7] ml-2 outline-none text-sm w-28 md-w-45 text-black"
+              className="dark:bg-[#323233] bg-[#f2f4f7] ml-2 outline-none text-sm w-28 md-w-45 text-black dark:text-gray-200"
             />
           </div>
         </div>
@@ -65,11 +93,11 @@ const Navbar = () => {
 
         {/* Right section - profile & icons */}
         <div className="flex items-center justify-end space-x-4 w-[200px]">
-          <div className="flex justify-center items-center bg-gray-300 size-9 rounded-full ">
-            <CgMenuGridR className="text-2xl text-gray-900 cursor-pointer hover:text-blue-600 hidden md:block" />
+          <div className="flex justify-center items-center bg-gray-300 size-9 rounded-full dark:bg-[#323233]">
+            <CgMenuGridR className="text-2xl text-gray-900 dark:text-gray-200 cursor-pointer hover:text-blue-600 hidden md:block" />
           </div>
-          <div className="flex justify-center items-center bg-gray-300 size-9 rounded-full ">
-            <HiBell className="text-2xl text-gray-900 cursor-pointer hover:text-blue-600 hidden md:block" />
+          <div className="flex justify-center items-center bg-gray-300 size-9 rounded-full dark:bg-[#323233]">
+            <HiBell className="text-2xl text-gray-900 dark:text-gray-200 cursor-pointer hover:text-blue-600 hidden md:block" />
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger className="m-0">
@@ -83,13 +111,18 @@ const Navbar = () => {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem className='text-base cursor-pointer flex gap-2 items-center'>
+                <DropdownMenuItem
+                  className='text-base cursor-pointer flex gap-2 items-center'
+                  onClick={() => dispatch(toggleTheme())}
+                >
                   <div className="rounded-full">
-                    <FaMoon className="size-4" />
+                    {
+                      theme === 'light'? <FaMoon className="size-4" /> : <FaSun className="size-4" />
+                    }
                   </div>
                   Change theme
                 </DropdownMenuItem>
-                <DropdownMenuItem className='text-base cursor-pointer'>
+                <DropdownMenuItem className='text-base cursor-pointer' onClick={logoutHandler} >
                   <div className="rounded-full">
                     <MdLogout className="size-6" />
                   </div>
