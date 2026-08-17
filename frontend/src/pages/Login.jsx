@@ -55,7 +55,7 @@ const Login = () => {
           <h1 className='text-blue-600 text-6xl font-bold'>Facelook</h1>
         </div>
         {/* right side */}
-        <div className='bg-white p-6 rounded-lg shadow-md md:w-[400px]'>
+        <div className='bg-white dark:bg-[#262829] p-6 rounded-lg shadow-md md:w-[400px]'>
           <form onSubmit={loginHandler} className='flex flex-col items-center space-y-3'>
             <input
               type='text'
@@ -74,7 +74,7 @@ const Login = () => {
               className='p-3 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500'
             />
             <button type="submit" className='bg-blue-700 text-white text-base font-bold py-2 rounded-lg hover:bg-blue-800 w-full'>Login</button>
-            <Link className='text-blue-600 text-sm hover:underline'>Forgot password</Link>
+            <Link className='text-blue-600 dark:text-blue-500 text-sm hover:underline'>Forgot password</Link>
             <hr className="my-2 text-gray-300 w-full"/>
             <button className='bg-green-600 text-white text-base font-bold py-2 rounded-lg hover:bg-green-700 w-full' onClick={(e) => {createAccHandler(e)}}>Create new account</button>
           </form>
