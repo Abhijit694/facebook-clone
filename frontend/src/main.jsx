@@ -5,13 +5,21 @@ import { Provider } from 'react-redux'
 import store from './redux/store'
 import ThemeProvider from './components/ThemeProvider'
 import { Toaster } from "@/components/ui/toast"
+import { persistStore } from 'redux-persist'
+import { PersistGate } from 'redux-persist/integration/react'
+
+
+
+const persistor = persistStore(store)
 
 createRoot(document.getElementById('root')).render(
   <Provider store={ store }>
-    <ThemeProvider>
-      <App />
-      <Toaster/>
-    </ThemeProvider>
+    <PersistGate loading={null} persistor={persistor}>
+      <ThemeProvider>
+        <App />
+        <Toaster/>
+      </ThemeProvider>
+    </PersistGate>
   </Provider>
   
 )
