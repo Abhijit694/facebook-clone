@@ -70,8 +70,8 @@ const SignUp = () => {
   return (
     <div className='h-screen flex flex-col gap-3 items-center justify-center'>
       <h1 className='text-blue-700 text-5xl font-bold text-center'>Facelook</h1>
-      <div className='bg-white px-3 py-1 rounded-lg shadow-md w-full md:max-w-[450px] mx-1 md:mx-0'>
-        <h2 className='text-xl font-semibold text-gray-800 text-center mb-1'>Create a new account</h2>
+      <div className='bg-white dark:bg-[#262829] px-3 py-1 rounded-lg shadow-md w-full md:max-w-[450px] mx-1 md:mx-0'>
+        <h2 className='text-xl font-semibold text-gray-800 dark:text-gray-100 text-center mb-1'>Create a new account</h2>
         <hr className='mb-2 text-gray-200' />
         <form onSubmit={handleSubmit} className='space-y-2 flex flex-col items-center p-3'>
           <div className='flex gap-3 md:w-full'>
@@ -94,7 +94,7 @@ const SignUp = () => {
           </div>
           {/* Date of birth */}
           <div className='w-full'>
-            <span className='text-sm text-gray-700'>Date of birth</span>
+            <span className='text-sm text-gray-700 dark:text-gray-200'>Date of birth</span>
             <div className='flex gap-2 mt-1'>
               <select
                 value={dobDay}
@@ -145,7 +145,7 @@ const SignUp = () => {
           </div>
           {/* Gender */}
           <div className="w-full">
-            <span className="text-sm font-semibold text-gray-700" >Gender</span>
+            <span className="text-sm font-semibold text-gray-700 dark:text-gray-200" >Gender</span>
             <div className="flex gap-3 mt-1">
               {
                 ["Male","Female","Other"].map((gender) => (
