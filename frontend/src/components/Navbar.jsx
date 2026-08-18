@@ -9,7 +9,6 @@ import { MdLogout, MdOutlineOndemandVideo } from "react-icons/md";
 import { BiStore } from "react-icons/bi";
 import { HiBell } from "react-icons/hi2";
 import { CgMenuGridR } from "react-icons/cg";
-import Avatar from "react-avatar";
 // import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -24,6 +23,7 @@ import { toggleTheme } from "@/redux/themeSlice";
 import axios from "axios";
 import { toast } from "./ui/toast";
 import { setUser } from "@/redux/authSlice";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -101,7 +101,10 @@ const Navbar = () => {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger className="m-0">
-                <Avatar facebookId="100008343750912" size="36" round={true} />
+              <Avatar>
+                <AvatarImage />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-56 bg-[#262829] text-white'>
               <DropdownMenuGroup>
