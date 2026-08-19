@@ -102,7 +102,7 @@ const Navbar = () => {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger className="m-0">
-              <Avatar className='size-9'>
+              <Avatar className='size-9 cursor-pointer'>
                 <AvatarImage src={userLogo} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
