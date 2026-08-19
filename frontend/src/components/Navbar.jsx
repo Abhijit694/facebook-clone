@@ -9,6 +9,7 @@ import { MdLogout, MdOutlineOndemandVideo } from "react-icons/md";
 import { BiStore } from "react-icons/bi";
 import { HiBell } from "react-icons/hi2";
 import { CgMenuGridR } from "react-icons/cg";
+import userLogo from "../assets/fb-user-profile.jpg"
 // import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -101,8 +102,8 @@ const Navbar = () => {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger className="m-0">
-              <Avatar>
-                <AvatarImage />
+              <Avatar className='size-9'>
+                <AvatarImage src={userLogo} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
