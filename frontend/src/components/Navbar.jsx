@@ -10,6 +10,7 @@ import { BiStore } from "react-icons/bi";
 import { HiBell } from "react-icons/hi2";
 import { CgMenuGridR } from "react-icons/cg";
 import userLogo from "../assets/fb-user-profile.jpg"
+import { IoIosArrowDown } from "react-icons/io";
 // import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -102,12 +103,15 @@ const Navbar = () => {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger className="m-0">
-              <Avatar className='size-9 cursor-pointer'>
+              <Avatar className='size-9 cursor-pointer relative'>
+                <div className="size-3.75 absolute rounded-full bg-gray-200 dark:bg-[#323233] outline-2 outline-white dark:outline-[#262829] bottom-0 right-0 flex items-center justify-center">
+                  <IoIosArrowDown className="text-[13px] text-gray-700 dark:text-gray-200"/>
+                </div>
                 <AvatarImage src={userLogo} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className='w-56 bg-[#262829] text-white'>
+            <DropdownMenuContent className='w-56 text-black dark:text-white bg-white dark:bg-[#262829]'>
               <DropdownMenuGroup>
                 <DropdownMenuItem className='text-base cursor-pointer' >My Profile</DropdownMenuItem>
                 <DropdownMenuItem className='text-base cursor-pointer' >Friends</DropdownMenuItem>
@@ -124,7 +128,7 @@ const Navbar = () => {
                       theme === 'light'? <FaMoon className="size-4" /> : <FaSun className="size-4" />
                     }
                   </div>
-                  Change theme
+                  Display
                 </DropdownMenuItem>
                 <DropdownMenuItem className='text-base cursor-pointer' onClick={logoutHandler} >
                   <div className="rounded-full">
