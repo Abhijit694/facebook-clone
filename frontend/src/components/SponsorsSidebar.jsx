@@ -20,7 +20,7 @@ const sponsors = [
 
 const SponsorsSidebar = () => {
   return (
-    <aside className="w-80 mt-16 fixed right-0 top-0 p-4 bg-[#f2f4f7] dark:bg-[#1b1b1c] hidden md:block">
+    <aside className="w-75 mt-16 fixed right-0 top-0 p-4 hidden md:block">
       <div className="text-base font-medium mb-4 text-gray-600 dark:text-gray-300">Sponsored</div>
       <div className="space-y-4">
         {
@@ -34,7 +34,7 @@ const SponsorsSidebar = () => {
               <img src={sponsor.image} className="size-29 object-cover rounded-md" />
               <div className="flex flex-col">
                 <span className="text-black text-base font-medium">{sponsor.description}</span>
-                <span className="text-xs text-gray-400">{sponsor.url}</span>
+                <span className="text-xs text-gray-500">{sponsor.url}</span>
               </div>
             </Link>
           ))
