@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
 import Friends from './pages/Friends'
+import Profile from './pages/Profile'
 
 
 const router = createBrowserRouter([
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <SignUp/>
+  },
+  {
+    path: '/profile/:id',
+    element: <Profile/>
   }
 ])
 
