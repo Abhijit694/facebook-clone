@@ -54,8 +54,8 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-white dark:bg-[#262829] shadow fixed w-full z-50">
-      <div className="px-4 py-2 md:py-0 flex justify-between items-center">
+    <nav className="bg-white dark:bg-[#262829] shadow h-14 fixed w-full z-50 px-4 py-2 md:py-0 flex justify-between items-center">
+      {/* <div className="px-4 py-2 md:py-0 flex justify-between items-center"> */}
         {/* left section - logo + search */}
         <div className="flex items-center space-x-3">
           <img
@@ -66,20 +66,20 @@ const Navbar = () => {
           />
           <div className="relative flex items-center bg-[#f2f4f7] dark:bg-[#323233] p-2 rounded-full">
             <label htmlFor="search">
-              <FiSearch className="text-gray-400" />
+              <FiSearch className="text-gray-500" />
             </label>
             <input
               type="text"
               id="search"
               placeholder="Search Facelook"
-              className="dark:bg-[#323233] bg-[#f2f4f7] ml-2 outline-none text-sm w-28 md-w-45 text-black dark:text-gray-200"
+              className="dark:bg-[#323233] bg-[#f2f4f7] placeholder-gray-500 ml-2 h-6.5 outline-none text-sm w-28 md:w-50 text-black dark:text-gray-200"
             />
           </div>
         </div>
 
         {/* Center section - navigation icons */}
-        <div className="hidden md:flex space-x-8 mt-2">
-          <button className="border-b-3 border-blue-600 w-[100px] flex items-center justify-center pb-3">
+        <div className="hidden md:flex space-x-8 h-full">
+          <button className="border-b-3 border-blue-600 w-[100px] flex items-center justify-center">
             <GoHomeFill className="text-3xl text-blue-600 cursor-pointer hover:text-blue-700" />
           </button>
           <button className="w-[100px] flex items-center justify-center hover:bg-gray-200/10 rounded lg transition-all">
@@ -140,7 +140,7 @@ const Navbar = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </div>
+      {/* </div> */}
     </nav>
   );
 };
