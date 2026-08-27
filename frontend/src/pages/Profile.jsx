@@ -11,6 +11,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { MdEdit } from "react-icons/md";
+import { FaPlus } from "react-icons/fa6";
+import { FaUserPlus, FaUserCheck } from "react-icons/fa";
 
 const Profile = () => {
   const [open, setOpen] = useState(false);
@@ -40,11 +51,13 @@ const Profile = () => {
         </div>
       </div>
 
+      
       <div className="bg-white dark:bg-[#262829] z-40 py-4">
         <div className="max-w-240 mx-auto px-5 md:px-10 flex flex-col md:flex-row gap-2 md:gap-0 md:justify-between">
           <div className="flex flex-col md:flex-row md:gap-5 md:items-center relative">
             <DropdownMenu>
               <DropdownMenuTrigger>
+                {/* profile picture */}
                 <img
                   src={userLogo}
                   className="size-44 cursor-pointer hover:invert-25 rounded-full border-4 border-white dark:border-[#262829] object-cover z-30"
@@ -73,19 +86,50 @@ const Profile = () => {
               </DropdownMenuContent>
             </DropdownMenu>
             
-            <Dialog>
-              <DialogTrigger>Open</DialogTrigger>
+ 
+            {/* see profile picture dialog */}
+            <Dialog open={open} onOpenChange={setOpen}>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Are you absolutely sure?</DialogTitle>
-                  <DialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    your account and remove your data from our servers.
-                  </DialogDescription>
+                  <DialogTitle className='text-center'>Profile picture</DialogTitle>
+                  <hr/>
                 </DialogHeader>
+                <div className="w-full">
+                  <img  src={userLogo} className="w-full object-cover"/>
+                </div>
               </DialogContent>
             </Dialog>
+
+            {/* name,friends */}
+            <div className="flex flex-col gap-0 w-60">
+              <h1 className="text-3xl font-bold">Abhijit Nayak</h1>
+              <span className="text-gray-900 dark:text-gray-200 mt-1 font-semibold">100 friends</span>
+              <span className="text-gray-600 dark:text-gray-400 mt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore modi</span>
+            </div>
           </div>
+          <div className="flex gap-2 items-center">
+            <button className="bg-[#0866ff] hover:bg-[#0a54cb] flex items-center gap-2 cursor-pointer text-white px-2.5 py-1.5 rounded-md">
+              <FaUserPlus/>
+              <span className="font-bold">Add friend</span>
+            </button>
+            <button className="bg-[#0866ff] hover:bg-[#0a54cb] flex items-center gap-2 cursor-pointer text-white px-2.5 py-1.5 rounded-md">
+              <FaPlus/>
+              <span className="font-bold">Add to story</span>
+            </button>
+            <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-100 dark:hover:bg-gray-200 flex items-center gap-2 cursor-pointer text-black px-2.5 py-1.5 rounded-md">
+              <MdEdit/>
+              <span className="font-bold">Edit profile</span>
+            </button>
+          </div>
+        </div>
+
+        <hr className="mt-5 mb-2 max-w-240 mx-auto" />
+
+        <div className="flex md:gap-5 max-w-240 mx-auto md:px-10">
+          <span className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer">Posts</span>
+          <span className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer">About</span>
+          <span className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer">Friends</span>
+          <span className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer">Photos</span>
         </div>
       </div>
     </div>
