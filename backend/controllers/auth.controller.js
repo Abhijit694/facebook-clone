@@ -117,3 +117,20 @@ export const logoutUser = (_,res) => {
         })
     }
 }
+
+export const getProfile = async (req,res) => {
+    try {
+        const userId = req.params.id
+        const user = await User.findById({userId})
+        return res.status(200).json({
+            user,
+            success: true
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        })
+    }
+}
