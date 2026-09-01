@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import User from "../models/user.model.js";
+import getDataUri from "../utils/dataUri.js";
+import cloudinary from "../utils/cloudinary.js";
 
 export const registerUser = async (req,res) => {
     try {
@@ -121,7 +123,7 @@ export const logoutUser = (_,res) => {
 export const getProfile = async (req,res) => {
     try {
         const userId = req.params.id
-        const user = await User.findById({userId})
+        const user = await User.findById(userId)
         return res.status(200).json({
             user,
             success: true
@@ -131,6 +133,76 @@ export const getProfile = async (req,res) => {
         return res.status(500).json({
             success: false,
             message: "Internal server error"
+        })
+    }
+}
+
+export const updateProfilePhoto = async (req,res) => {
+    try {
+        const userId = req.id
+        const file = req.file
+
+        if(!file){
+            return res.status(400).json({
+                message: "Profile picture is required",
+                success: false
+            })
+        }
+        const fileUri = getDataUri(file)
+        // upload to cloudinary
+        const result = await cloudinary.uploader.upload(fileUri)
+        
+        // update user document
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { profilePicture: result.secure_url },
+            { new: true }
+        )
+        return res.status(200).json({
+            success: true,
+            message: "Profile picture updated successfully",
+            profilePicture: user.profilePicture
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false
+        })
+    }
+}
+
+export const updateCoverPhoto = async (req,res) => {
+    try {
+        const userId = req.id
+        const file = req.file
+
+        if(!file){
+            return res.status(400).json({
+                message: "Cover photo is required",
+                success: false
+            })
+        }
+        const fileUri = getDataUri(file)
+        // upload to cloudinary
+        const result = await cloudinary.uploader.upload(fileUri)
+
+        // update user document
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { coverPhoto: result.secure_url },
+            { new: true }
+        )
+        return res.status(200).json({
+            success: true,
+            message: "Cover photo updaed successfully",
+            coverPhoto: user.coverPhoto
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false
         })
     }
 }
