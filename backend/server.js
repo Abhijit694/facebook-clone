@@ -4,6 +4,7 @@ import express from "express"
 import connectDB from "./config/db.js"
 import authRouter from "./routes/auth.route.js"
 import cors from "cors"
+import cookieParser from "cookie-parser"
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -11,6 +12,7 @@ const port = process.env.PORT || 3000
 
 // Middlewares
 app.use(express.json())
+app.use(cookieParser())
 app.use(express.urlencoded({ extended: true}))
 app.use(cors({
     origin: "http://localhost:5173",
