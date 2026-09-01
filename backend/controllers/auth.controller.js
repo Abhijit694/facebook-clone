@@ -156,7 +156,7 @@ export const updateProfilePhoto = async (req,res) => {
         const user = await User.findByIdAndUpdate(
             userId,
             { profilePicture: result.secure_url },
-            { new: true }
+            { returnDocument: "after" }
         )
         return res.status(200).json({
             success: true,
@@ -164,9 +164,9 @@ export const updateProfilePhoto = async (req,res) => {
             profilePicture: user.profilePicture
         })
     } catch (error) {
-        console.log(error)
+        console.log("CLOUDINARY ERROR:", JSON.stringify(error, null, 2))
         return res.status(500).json({
-            message: "Internal server error",
+            message: error.message || "Internal server error",
             success: false
         })
     }
@@ -191,7 +191,7 @@ export const updateCoverPhoto = async (req,res) => {
         const user = await User.findByIdAndUpdate(
             userId,
             { coverPhoto: result.secure_url },
-            { new: true }
+            { returnDocument: "after" }
         )
         return res.status(200).json({
             success: true,
