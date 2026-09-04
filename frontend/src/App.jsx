@@ -6,6 +6,11 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
 import Friends from './pages/Friends'
 import Profile from './pages/Profile'
+import Navbar from './components/Navbar'
+import PostPage from './pages/PostPage'
+import AboutPage from './pages/AboutPage'
+import FriendsPage from './pages/FriendsPage'
+import PhotosPage from './pages/PhotosPage'
 
 
 const router = createBrowserRouter([
@@ -33,7 +38,28 @@ const router = createBrowserRouter([
   },
   {
     path: '/profile/:id',
-    element: <Profile/>
+    element: <ProtectedRoute>
+      <Navbar/>
+      <Profile/>
+    </ProtectedRoute>,
+    children: [
+      {
+        path: 'post',
+        element: <PostPage/>
+      },
+      {
+        path: 'about',
+        element: <AboutPage/>
+      },
+      {
+        path: 'friends',
+        element: <FriendsPage/>
+      },
+      {
+        path: 'photos',
+        element: <PhotosPage/>
+      }
+    ]
   }
 ])
 
