@@ -5,6 +5,7 @@ import {
   logoutUser,
   registerUser,
   updateCoverPhoto,
+  updateIntro,
   updateProfilePhoto,
 } from "../controllers/auth.controller.js";
 import { isAuthenticated } from "../middlewares/isAuthenticated.js";
@@ -28,5 +29,7 @@ router.put(
   upload.single("file"),
   updateCoverPhoto,
 );
+
+router.put('/update-intro',isAuthenticated,updateIntro)
 
 export default router;
