@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken"
 import User from "../models/user.model.js";
 import getDataUri from "../utils/dataUri.js";
 import cloudinary from "../utils/cloudinary.js";
+import Bio from "../models/userBio.model.js";
 
 export const registerUser = async (req,res) => {
     try {
@@ -206,3 +207,47 @@ export const updateCoverPhoto = async (req,res) => {
         })
     }
 }
+
+export const updateIntro = async (req,res) => {
+    try {
+        const userId = req.id
+        const { bioText, liveIn, relationship, workplace, education, phone, hometown } = req.body
+
+        let bio = await Bio.findOne({user: userId})
+
+        if(!bio){
+            bio = new Bio({user: userId})
+        }
+
+        // update only provided  fields
+        if(bioText !== undefined) bio.bioText = bioText
+        if(liveIn !== undefined) bio.liveIn = liveIn
+        if(relationship !== undefined) bio.relationship = relationship
+        if(workplace !== undefined) bio.workplace = workplace
+        if(education !== undefined) bio.education = education
+        if(phone !== undefined) bio.phone = phone
+        if(hometown !== undefined) bio.hometown = hometown
+
+        await bio.save()
+
+        const user = await User.findById(userId)
+        if(!user.bio || user.bio.toString() !== bio._id.toString()){
+            user.bio = bio._id
+            await user.save()
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Bio updated successfully",
+            bio
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Error updating bio",
+            success: false,
+            error: error.message
+        })
+    }
+}
+
