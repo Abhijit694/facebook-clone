@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -22,9 +22,34 @@ import {
 import { MdEdit } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import { FaUserPlus, FaUserCheck } from "react-icons/fa";
+import axios from "axios";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserProfile } from "@/redux/authSlice";
 
 const Profile = () => {
+  const dispatch = useDispatch()
   const [open, setOpen] = useState(false);
+  const params = useParams()
+  const navigate = useNavigate()
+  const { userProfile } = useSelector(store => store.auth)
+  const coverPhoto = userProfile.coverPhoto || defaultCoverImage
+
+
+  const fetchUserProfile = async (req,res) => {
+    try {
+      const res = await axios.get(`http://localhost:8000/api/v1/auth/profile/${params.id}`)
+      if(res.data.success){
+        dispatch(setUserProfile(res.data.user))
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchUserProfile()
+  },[])
 
   return (
     <div className="min-h-screen ">
@@ -32,7 +57,7 @@ const Profile = () => {
         {/* Blurred background */}
         <div
           className="absolute inset-0 bg-center bg-cover filter"
-          style={{ backgroundImage: `url(${defaultCoverImage})` }}
+          style={{ backgroundImage: `url(${coverPhoto})` }}
         ></div>
         {/* Overlay to darken he blur */}
         <div className="absolute inset-0 bg-black/40 backbrop-blur-lg bg-linear-to-b from-transparent dark:to-[#262829] to-white"></div>
@@ -40,7 +65,7 @@ const Profile = () => {
         {/* Actual cover image */}
         <div className="relative flex justify-center items-center">
           <img
-            src={defaultCoverImage}
+            src={coverPhoto}
             alt="cover"
             className="rounded-b-md w-full lg:w-240 h-60 md:h-100 object-cover"
           />
@@ -59,7 +84,7 @@ const Profile = () => {
               <DropdownMenuTrigger>
                 {/* profile picture */}
                 <img
-                  src={userLogo}
+                  src={userProfile.profilePicture || userLogo}
                   className="size-44 cursor-pointer hover:invert-25 rounded-full border-4 border-white dark:border-[#262829] object-cover z-30"
                 />
               </DropdownMenuTrigger>
@@ -89,13 +114,12 @@ const Profile = () => {
  
             {/* see profile picture dialog */}
             <Dialog open={open} onOpenChange={setOpen}>
-              <DialogContent>
+              <DialogContent className='size-100'>
                 <DialogHeader>
                   <DialogTitle className='text-center'>Profile picture</DialogTitle>
-                  <hr/>
                 </DialogHeader>
                 <div className="w-full">
-                  <img  src={userLogo} className="w-full object-cover"/>
+                  <img  src={userProfile.profilePicture || userLogo} className="w-full object-cover"/>
                 </div>
               </DialogContent>
             </Dialog>
@@ -126,12 +150,25 @@ const Profile = () => {
         <hr className="mt-5 mb-2 max-w-240 mx-auto" />
 
         <div className="flex md:gap-5 max-w-240 mx-auto md:px-10">
-          <span className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer">Posts</span>
-          <span className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer">About</span>
-          <span className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer">Friends</span>
-          <span className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer">Photos</span>
+          <span
+            className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer"
+            onClick={() => navigate(`/profile/${userProfile._id}/post`)}
+          >Posts</span>
+          <span
+            className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer"
+            onClick={() => navigate(`/profile/${userProfile._id}/about`)}
+          >About</span>
+          <span
+            className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer"
+            onClick={() => navigate(`/profile/${userProfile._id}/friends`)}
+          >Friends</span>
+          <span
+            className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer"
+            onClick={() => navigate(`/profile/${userProfile._id}/photos`)}
+          >Photos</span>
         </div>
       </div>
+      <Outlet/>
     </div>
   );
 };
