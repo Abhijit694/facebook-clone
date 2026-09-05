@@ -153,7 +153,7 @@ const Profile = () => {
           <span
             className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer"
             onClick={() => navigate(`/profile/${userProfile._id}/post`)}
-          >Posts</span>
+          >All</span>
           <span
             className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer"
             onClick={() => navigate(`/profile/${userProfile._id}/about`)}
