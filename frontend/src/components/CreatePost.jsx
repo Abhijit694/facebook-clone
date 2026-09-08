@@ -20,7 +20,7 @@ const CreatePost = () => {
   const { user } = useSelector((store) => store.auth);
 
   return (
-    <div className="bg-white dark:bg-[#262829] shadow-md py-2.5 px-5 rounded-lg w-125 md:mt-2">
+    <div className="bg-white dark:bg-[#262829] shadow-md py-2.5 px-5 rounded-lg w-125">
       <div className="flex gap-3 items-center">
         <Avatar className="size-9">
           <AvatarImage src={user.profilePicture || userLogo} />
