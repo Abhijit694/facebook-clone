@@ -124,7 +124,7 @@ export const logoutUser = (_,res) => {
 export const getProfile = async (req,res) => {
     try {
         const userId = req.params.id
-        const user = await User.findById(userId)
+        const user = await User.findById(userId).populate({path: 'bio'})
         return res.status(200).json({
             user,
             success: true
