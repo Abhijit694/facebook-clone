@@ -1,4 +1,6 @@
+import CreatePost from '@/components/CreatePost'
 import Intro from '@/components/Intro'
+import PostCard from '@/components/PostCard'
 import React from 'react'
 
 const PostPage = () => {
@@ -7,6 +9,10 @@ const PostPage = () => {
         <div>
             {/* intro */}
             <Intro/>
+        </div>
+        <div className='space-y-4' >
+          <CreatePost/>
+          <PostCard/>
         </div>
     </div>
   )
