@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -25,15 +25,18 @@ import { FaUserPlus, FaUserCheck } from "react-icons/fa";
 import axios from "axios";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserProfile } from "@/redux/authSlice";
+import { setLoading, setUser, setUserProfile } from "@/redux/authSlice";
+import { toast } from "@/components/ui/toast";
 
 const Profile = () => {
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false);
   const params = useParams()
   const navigate = useNavigate()
-  const { userProfile } = useSelector(store => store.auth)
+  const { loading,user,userProfile } = useSelector(store => store.auth)
   const coverPhoto = userProfile.coverPhoto || defaultCoverImage
+  const profilePicRef = useRef()
+  const coverPicRef = useRef()
 
 
   const fetchUserProfile = async (req,res) => {
@@ -47,13 +50,95 @@ const Profile = () => {
     }
   }
 
+  const handleProfilePicChange = async (e) => {
+    const file = e.target.files?.[0]
+    if(!file){
+      return
+    }
+
+    const formData = new FormData()
+    formData.append("file",file)
+
+    try {
+      dispatch(setLoading(true))
+      const res = await axios.put(
+        `http://localhost:8000/api/v1/auth/update/profile-picture`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          },
+          withCredentials: true
+        }
+      )
+      if(res.data.success){
+        toast.add({
+          type: "success",
+          description: res.data.message
+        })
+        const profilePicture = res.data.profilePicture
+        dispatch(setUser({...user,profilePicture}))
+        dispatch(setUserProfile({...userProfile,profilePicture}))
+      }
+    } catch (error) {
+      console.error("Error uploading profile picture",error)
+    } finally{
+      dispatch(setLoading(false))
+    }
+  }
+
+  const handleCoverPicChange = async (e) => {
+     const file = e.target.files?.[0]
+     if(!file){
+      return
+     }
+
+     const formData = new FormData()
+     formData.append("file",file)
+
+     try {
+      dispatch(setLoading(true))
+      const res = await axios.put(
+        `http://localhost:8000/api/v1/auth/update/cover-photo`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          },
+          withCredentials: true
+        }
+      )
+      if(res.data.status){
+        toast.add({
+          type: "success",
+          description: res.data.message
+        })
+        const coverPhoto = res.data.coverPhoto
+        dispatch(setUser({...user,coverPhoto}))
+        dispatch(setUserProfile({...userProfile,coverPhoto}))
+      }
+     } catch (error) {
+      console.log("Error uploading cover picture",error)
+     } finally{
+      dispatch(setLoading(false))
+     }
+  }
+
   useEffect(() => {
     fetchUserProfile()
   },[])
 
   return (
     <div className="min-h-screen ">
+      {
+        loading && (
+          <div className="fixed inset-0 z-9999 bg-black/30 backdrop-blur-sm flex items-center justify-center ">
+            <div className="text-white text-xl font-semibold animate-pulse" >Uploading...</div>
+          </div>
+        )
+      }
       <div className="relative w-full">
+        <input type="file" className="hidden" ref={coverPicRef} onChange={(e) => handleCoverPicChange(e)} />
         {/* Blurred background */}
         <div
           className="absolute inset-0 bg-center bg-cover filter"
@@ -71,7 +156,10 @@ const Profile = () => {
           />
           <div className="absolute right-5 md:right-55 bottom-3 md:bottom-5 flex items-center gap-2 bg-white hover:bg-gray-100 cursor-pointer text-black py-2 px-3 rounded-md">
             <IoCamera className="text-lg" />
-            <span className="text-[15px] font-medium">Add Cover Photo</span>
+            <span
+              className="text-[15px] font-medium"
+              onClick={() => coverPicRef.current.click()}
+            >Add Cover Photo</span>
           </div>
         </div>
       </div>
@@ -80,6 +168,8 @@ const Profile = () => {
       <div className="bg-white dark:bg-[#262829] z-40 py-4">
         <div className="max-w-240 mx-auto px-5 md:px-10 flex flex-col md:flex-row gap-2 md:gap-0 md:justify-between">
           <div className="flex flex-col md:flex-row md:gap-5 md:items-center relative">
+
+            <input type="file" className="hidden" ref={profilePicRef} onChange={handleProfilePicChange} />
             <DropdownMenu>
               <DropdownMenuTrigger>
                 {/* profile picture */}
@@ -102,7 +192,10 @@ const Profile = () => {
                     See profile picture
                   </span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+                <DropdownMenuItem
+                  className="flex items-center gap-2 cursor-pointer"
+                  onClick={() => profilePicRef.current.click()}
+                >
                   <LuCamera />
                   <span className="text-base font-medium">
                     Choose profile picture
@@ -128,7 +221,7 @@ const Profile = () => {
             <div className="flex flex-col gap-0 w-60">
               <h1 className="text-3xl font-bold">Abhijit Nayak</h1>
               <span className="text-gray-900 dark:text-gray-200 mt-1 font-semibold">100 friends</span>
-              <span className="text-gray-600 dark:text-gray-400 mt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore modi</span>
+              <span className="text-gray-600 dark:text-gray-400 mt-1">{ userProfile?.bio?.bioText || "" }</span>
             </div>
           </div>
           <div className="flex gap-2 items-center">
