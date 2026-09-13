@@ -8,6 +8,14 @@ import { FaPhone } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 const Intro = () => {
 
@@ -51,7 +59,7 @@ const Intro = () => {
     ]
 
   return (
-    <div className="bg-white dark:bg-[#262829] flex-1 rounded-lg p-5 h-max shadow-md" >
+    <div className="bg-white dark:bg-[#262829] flex-1 rounded-lg p-5 h-max shadow-md md:w-90" >
       <h1 className="text-xl font-bold mb-2 text-gray-700 dark:text-gray-200" >Personal details</h1>
       {
         arr1.map((item,index) => {
@@ -63,7 +71,100 @@ const Intro = () => {
           )
         })
       }
-      <button className="w-full bg-[#e1e4e8] hover:bg-[#c8cdd2] dark:bg-[#3a3c3d] text-gray-800 dark:text-gray-200 cursor-pointer py-1 rounded-md font-medium" >Edit details</button>
+      
+      <Dialog>
+        <DialogTrigger>
+          <button className="md:w-80 bg-[#e1e4e8] hover:bg-[#c8cdd2] dark:bg-[#3a3c3d] text-gray-800 dark:text-gray-200 cursor-pointer py-1 rounded-md font-medium" >Edit details</button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-106.25 md:max-w-125 lg:max-w-135 " >
+          <DialogHeader>
+            <DialogTitle className="text-center md:text-xl font-semibold " >Edit details</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-2" >
+            <div className="flex flex-col gap-2" >
+              <label htmlFor="bio" className="text-lg font-medium">Bio</label>
+              <textarea
+                id="bio"
+                placeholder="Tell something about yourself..."
+                rows="3"
+                maxLength="100"
+                name="bioText"
+                value={introData.bioText}
+                className="py-1 px-2 md:text-base outline-none border-[1.25px] border-gray-400 rounded-md resize-none"
+              />
+            </div>
+            <div className="flex flex-col gap-2" >
+              <label htmlFor="work" className="text-lg font-medium">Workplace</label>
+              <input
+                type="text"
+                id="work"
+                placeholder="Your workplace"
+                name="workplace"
+                value={introData.workplace}
+                className="py-1 px-2 md:text-base outline-none border-[1.25px] border-gray-400 rounded-md"
+              />
+            </div>
+            <div className="flex flex-col gap-2" >
+              <label htmlFor="education" className="text-lg font-medium">Education</label>
+              <input
+                type="text"
+                id="education"
+                placeholder="Your education"
+                name="Education"
+                value={introData.education}
+                className="py-1 px-2 md:text-base outline-none border-[1.25px] border-gray-400 rounded-md"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3" >
+              <div className="flex flex-col gap-2" >
+                <label htmlFor="liveIn" className="text-lg font-medium">Lives In</label>
+                <input
+                  type="text"
+                  id="liveIn"
+                  name="liveIn"
+                  value={introData.liveIn}
+                  className="py-1 px-2 md:text-base outline-none border-[1.25px] border-gray-400 rounded-md"
+                />
+              </div>
+              <div className="flex flex-col gap-2" >
+                <label htmlFor="hometown" className="text-lg font-medium">Hometown</label>
+                <input
+                  type="text"
+                  id="hometown"
+                  name="hometown"
+                  value={introData.hometown}
+                  className="py-1 px-2 md:text-base outline-none border-[1.25px] border-gray-400 rounded-md"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3" >
+              <div className="flex flex-col gap-2" >
+                <label htmlFor="phone" className="text-lg font-medium">Phone</label>
+                <input
+                  type="text"
+                  id="phone"
+                  name="phone"
+                  value={introData.phone}
+                  className="py-1 px-2 md:text-base outline-none border-[1.25px] border-gray-400 rounded-md"
+                />
+              </div>
+              <div className="flex flex-col gap-2" >
+                <label htmlFor="relationship" className="text-lg font-medium">Relationship</label>
+                <input
+                  type="text"
+                  id="relationship"
+                  name="relationship"
+                  value={introData.relationship}
+                  className="py-1 px-2 md:text-base outline-none border-[1.25px] border-gray-400 rounded-md"
+                />
+              </div>
+            </div>
+
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
