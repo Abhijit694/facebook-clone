@@ -20,7 +20,7 @@ const Login = () => {
 
   const loginHandler = async (e) => {
     e.preventDefault()
-    console.log(formData)
+    // console.log(formData)
     try {
       const response = await axios.post(
         'http://localhost:8000/api/v1/auth/login',
@@ -40,6 +40,10 @@ const Login = () => {
       }
     } catch (error) {
       console.log(error)
+      toast.add({
+        type: 'error',
+        description: error.response.data.message
+      })
     }
   }
 
@@ -55,7 +59,7 @@ const Login = () => {
           <h1 className='text-blue-600 text-6xl font-bold'>Facelook</h1>
         </div>
         {/* right side */}
-        <div className='bg-white dark:bg-[#262829] p-6 rounded-lg shadow-md md:w-[400px]'>
+        <div className='bg-white dark:bg-[#262829] p-6 rounded-lg shadow-md md:w-100'>
           <form onSubmit={loginHandler} className='flex flex-col items-center space-y-3'>
             <input
               type='text'
