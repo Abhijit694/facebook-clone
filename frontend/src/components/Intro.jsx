@@ -6,8 +6,9 @@ import { MdHomeWork } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaPhone } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
+import { BiLoaderCircle } from "react-icons/bi";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Dialog,
   DialogContent,
@@ -17,11 +18,18 @@ import {
   DialogTrigger,
   DialogFooter
 } from "@/components/ui/dialog"
+import axios from "axios";
+import { setUserProfile } from "@/redux/authSlice";
+import { toast } from "./ui/toast";
 
 const Intro = () => {
 
-  const { userProfile } = useSelector(store => store.auth)
+  const dispatch = useDispatch()
 
+  const { userProfile } = useSelector(store => store.auth)
+  const [loadingIntro,setLoadingIntro] = useState(false)
+
+  const [openIntroDialog,setOpenIntroDialog] = useState(false)
   const [introData, setIntroData] = useState({
     bioText: userProfile?.bio?.bioText,
     liveIn: userProfile?.bio?.liveIn,
@@ -35,27 +43,27 @@ const Intro = () => {
     const arr1 = [
         {
             icon: <FaBriefcase/>,
-            text: `Works at ${introData.workplace}`
+            text: `Works at ${userProfile.bio.workplace}`
         },
         {
             icon: <FaLocationDot className="text-[18px]" />,
-            text: `Lives in ${introData.liveIn}`
+            text: `Lives in ${userProfile.bio.liveIn}`
         },
         {
             icon: <FaGraduationCap className="text-[18px]" />,
-            text: `Studied at ${introData.education}`
+            text: `Studied at ${userProfile.bio.education}`
         },
         {
             icon: <MdHomeWork className="text-[18px]" />,
-            text: `From ${introData.hometown}`
+            text: `From ${userProfile.bio.hometown}`
         },
         {
             icon: <FaPhone/>,
-            text: `${introData.phone}`
+            text: `${userProfile.bio.phone}`
         },
         {
             icon: <FaHeart/>,
-            text: `${introData.relationship}`
+            text: `${userProfile.bio.relationship}`
         },
     ]
 
@@ -67,8 +75,37 @@ const Intro = () => {
       }))
     }
 
-    const editRelationshipHandler = (value) => {
-      setIntroData({...introData, relationship: value})
+    const editRelationshipHandler = (e) => {
+      console.log(e.target.value)
+      setIntroData({...introData, relationship: e.target.value})
+    }
+
+    const submitHandler = async (e) => {
+      try {
+        setLoadingIntro(true)
+        const res = await axios.put(
+          `http://localhost:8000/api/v1/auth/update-intro`,
+          introData,
+          {
+            headers: {
+              "Content-Type": "application/json"
+            },
+            withCredentials: true
+          }
+        )
+        if(res.data.success){
+          dispatch(setUserProfile({...userProfile, bio: res.data.bio}))
+          toast.add({
+            type: "success",
+            description: res.data.message
+          })
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoadingIntro(false)
+        setOpenIntroDialog(false)
+      }
     }
 
   return (
@@ -84,11 +121,12 @@ const Intro = () => {
           )
         })
       }
+      <button
+        className="w-full bg-[#e1e4e8] hover:bg-[#c8cdd2] dark:bg-[#3a3c3d] text-gray-800 dark:text-gray-200 cursor-pointer py-1 rounded-md font-medium"
+        onClick={() => setOpenIntroDialog(true)}
+      >Edit details</button>
       
-      <Dialog>
-        <DialogTrigger>
-          <button className="md:w-80 bg-[#e1e4e8] hover:bg-[#c8cdd2] dark:bg-[#3a3c3d] text-gray-800 dark:text-gray-200 cursor-pointer py-1 rounded-md font-medium" >Edit details</button>
-        </DialogTrigger>
+      <Dialog open={openIntroDialog} onOpenChange={setOpenIntroDialog} >
         <DialogContent className="sm:max-w-106.25 md:max-w-115 lg:max-w-130 " >
           <DialogHeader>
             <DialogTitle className="text-center md:text-xl font-semibold " >Edit details</DialogTitle>
@@ -175,9 +213,10 @@ const Intro = () => {
                   name="relationship"
                   id="relationship"
                   className="py-1 px-2 md:text-base outline-none border-[1.25px] border-gray-400 rounded-md"
-                  onValueChange={editRelationshipHandler}
+                  onChange={editRelationshipHandler}
+                  defaultValue=""
                 >
-                  <option value="" selected >Choose status</option>
+                  <option value="">Choose status</option>
                   <option value="Single">Single</option>
                   <option value="In a relationship">In a relationship</option>
                   <option value="Engaged">Engaged</option>
@@ -192,7 +231,20 @@ const Intro = () => {
           </div>
           <DialogFooter>
             <button className="text-base border border-gray-700 rounded-md cursor-pointer py-1 px-2 hover:bg-gray-100" >Cancel</button>
-            <button className="text-base bg-[#0866ff] hover:bg-[#1755db] text-white rounded-md cursor-pointer py-1 px-2" >Save</button>
+            <button
+              className="text-base bg-[#0866ff] hover:bg-[#1755db] text-white rounded-md cursor-pointer py-1 px-2"
+              disabled={loadingIntro}
+              onClick={submitHandler}
+            >
+              {
+                loadingIntro ? (
+                  <div className="flex items-center justify-center gap-1" >
+                    <BiLoaderCircle className="size-4 animate-spin" />
+                    Please wait...
+                  </div>
+                ) : "Save"
+              }
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
