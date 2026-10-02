@@ -59,7 +59,12 @@ export const createPost = async (req,res) => {
 
 export const getAllPost = async (req,res) => {
     try {
-        const posts = await Post.find().sort({createdAt: -1})
+        const posts = await Post.find()
+        .sort({createdAt: -1})
+        .populate({
+            path: "user",
+            select: 'firstname lastname profilePicture'
+        })
         return res.status(200).json({
             success: true,
             posts
@@ -151,6 +156,7 @@ export const deletePost = async (req,res) => {
     }
 }
 
+
 export const updatePost = async (req,res) => {
     try {
         const postId = req.params.postId
@@ -175,6 +181,64 @@ export const updatePost = async (req,res) => {
             message: "Post updated successfully"
         })
 
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        })
+    }
+}
+
+
+export const likePost = async (req,res) => {
+    try {
+        const postId = req.params.id
+        const likeKarneWaleUserKiId = req.id
+        const post = await Post.findById(postId)
+        if(!post){
+            return res.status(404).json({
+                success: false,
+                message: "Post not found"
+            })
+        }
+
+        // Like logic started
+        await post.updateOne({ $addToSet: {likes: likeKarneWaleUserKiId}})
+        await post.save()
+        return res.status(200).json({
+            success: true,
+            message: "Post liked"
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        })
+    }
+}
+
+
+export const disLikePost = async (req,res) => {
+    try {
+        const postId = req.params.id
+        const disLikeKarneWaleUserKiId = req.id
+        const post = await Post.findById(postId)
+        if(!post){
+            return res.status(404).json({
+                success: false,
+                message: "Post not found"
+            })
+        }
+
+        // Dislike logic started
+        await post.updateOne({$pull: {likes: disLikeKarneWaleUserKiId}})
+        await post.save()
+        return res.status(200).json({
+            success: true,
+            message: "Like removed"
+        })
     } catch (error) {
         console.log(error)
         return res.status(500).json({
