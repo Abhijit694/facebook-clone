@@ -11,6 +11,7 @@ import {
 import storageModule from 'redux-persist/lib/storage'
 import themeReducer from './themeSlice'
 import authReducer from './authSlice'
+import postReducer from './postSlice'
 
 
 
@@ -24,7 +25,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   theme: themeReducer,
-  auth: authReducer
+  auth: authReducer,
+  post: postReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
