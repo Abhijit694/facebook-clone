@@ -26,6 +26,7 @@ import axios from "axios";
 import { toast } from "./ui/toast";
 import { setUser } from "@/redux/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { setPosts } from "@/redux/postSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const Navbar = () => {
       const res = await axios.get(`http://localhost:8000/api/v1/auth/logout`)
       if(res.data.success){
         dispatch(setUser(null))
+        dispatch(setPosts([]))
         navigate("/login")
         toast.add({
           type: "success",
