@@ -78,3 +78,40 @@ export const deleteComment = async (req,res) => {
         })
     }
 }
+
+
+export const likeComment = async (req,res) => {
+    try {
+        const userId = req.id
+        const commentId = req.params.id
+
+        const comment = await Comment.findById(commentId).populate("userId")
+        if(!comment){
+            return res.status(404).json({
+                success: false,
+                message: "Comment not found"
+            })
+        }
+
+        const alreadyLiked = comment.likes.includes(userId)
+        if(alreadyLiked){
+            comment.likes = comment.likes.filter(id => id !== userId)
+            comment.numberOfLikes -= 1
+        } else {
+            comment.likes.push(userId)
+            comment.numberOfLikes += 1
+        }
+        await comment.save()
+        return res.status(200).json({
+            success: true,
+            message: alreadyLiked ? "Comment unliked" : "Comment liked",
+            updatedComment: comment
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        })    
+    }
+}
