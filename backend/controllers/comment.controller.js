@@ -41,3 +41,40 @@ export const createComment = async (req,res) => {
         })
     }
 }
+
+
+export const deleteComment = async (req,res) => {
+    try {
+        const commentId = req.params.id
+        const authorId = req.id
+        const comment = await Comment.findById(commentId)
+        if(!comment){
+            return res.status(404).json({
+                success: false,
+                message: "Comment not found"
+            })
+        }
+        if(comment.userId.toString() !== authorId){
+            return res.status(403).json({
+                success: false,
+                message: "Unauthorised to delete this comment"
+            })
+        }
+        const postId = comment.postId
+        // Delete the comment
+        await Comment.findByIdAndDelete(commentId)
+
+        // Remove the comment id from post's comment array
+        await Post.findByIdAndUpdate(postId,{$pull : {comments: commentId}})
+        res.status(200).json({
+            success: true,
+            message: "Comment deleted successfully"
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        })
+    }
+}
