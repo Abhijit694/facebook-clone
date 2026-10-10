@@ -65,6 +65,13 @@ export const getAllPost = async (req,res) => {
             path: "user",
             select: 'firstname lastname profilePicture'
         })
+        .populate({
+            path: 'comments',
+            populate: {
+                path: "userId",
+                select: ["firstname","lastname","profilePicture"]
+            }
+        })
         return res.status(200).json({
             success: true,
             posts
