@@ -26,7 +26,7 @@ app.use(cors({
 // api
 app.use("/api/v1/auth",authRouter)
 app.use("/api/v1/post",postRouter)
-app.use("api/v1/comment",commentRouter)
+app.use("/api/v1/comment",commentRouter)
 
 app.listen(port,() => {
     console.log(`Server is running on port ${port}`);
