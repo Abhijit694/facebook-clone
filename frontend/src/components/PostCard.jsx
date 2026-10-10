@@ -11,6 +11,7 @@ import store from '@/redux/store';
 import { toast } from './ui/toast';
 import axios from 'axios';
 import { setPosts } from '@/redux/postSlice';
+import CommentBox from './CommentBox';
 
 const PostCard = ({post}) => {
 
@@ -19,6 +20,7 @@ const PostCard = ({post}) => {
     const {posts} = useSelector(store => store.post)
     const [liked, setLiked] = useState(post?.likes?.includes(user?._id))
     const [postLikeCount, setPostLikeCount] = useState(post?.likes?.length)
+    const [openCommentDialog, setOpenCommentDialog] = useState(false)
 
     const likeOrDislikeHandler = async () => {
         try {
@@ -116,7 +118,10 @@ const PostCard = ({post}) => {
                 </div>
                 <span className='text-sm'>{postLikeCount}</span>
             </div>
-            <div className='h-full w-fit px-2 flex gap-2 items-center justify-center hover:bg-gray-100 cursor-pointer'>
+            <div 
+                className='h-full w-fit px-2 flex gap-2 items-center justify-center hover:bg-gray-100 cursor-pointer'
+                onClick={() => setOpenCommentDialog(!openCommentDialog)}
+            >
                 <FaRegComment className='text-xl' />
                 <span className='text-sm'>{post.comments.length}</span>
             </div>
@@ -128,6 +133,9 @@ const PostCard = ({post}) => {
                 <span className='text-sm'>{post.share.length}</span>
             </div>
         </div>
+        {
+            openCommentDialog && <CommentBox post={post} />
+        }
     </div>
   )
 }
