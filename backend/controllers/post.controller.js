@@ -150,7 +150,7 @@ export const deletePost = async (req,res) => {
         }
         await Post.findByIdAndDelete(postId)
         
-        return res.status(200).jaon({
+        return res.status(200).json({
             success: true,
             message: "Post deleted successfully"
         })
