@@ -124,7 +124,25 @@ export const logoutUser = (_,res) => {
 export const getProfile = async (req,res) => {
     try {
         const userId = req.params.id
-        const user = await User.findById(userId).populate({path: 'bio'})
+        const user = await User.findById(userId)
+        .populate({
+            path: 'posts',
+            options: { sort: {createdAt: -1} },
+            populate: [
+                {
+                    path: "user",
+                    select: "firstname lastname profilePicture"
+                },
+                {
+                    path: "comments",
+                    populate: {
+                        path: "userId",
+                        select: "firstname lastname profilePicture"
+                    }
+                }
+            ]
+        })
+        .populate({path: 'bio'})
         return res.status(200).json({
             user,
             success: true
