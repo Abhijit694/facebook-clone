@@ -2,6 +2,7 @@ import sharp from "sharp"
 import cloudinary from "../utils/cloudinary.js"
 import Post from "../models/post.model.js"
 import User from "../models/user.model.js"
+import getDataUri from "../utils/dataUri.js"
 
 export const createPost = async (req,res) => {
     try {
@@ -149,6 +150,9 @@ export const deletePost = async (req,res) => {
             })
         }
         await Post.findByIdAndDelete(postId)
+
+        // remove the postId  from the posts array field
+        const user = await User.findByIdAndUpdate(authorId,{$pull: {posts: postId}})
         
         return res.status(200).json({
             success: true,
@@ -176,16 +180,34 @@ export const updatePost = async (req,res) => {
                 message: "Post not found"
             })
         }
-        let photo;
+        let updateData = {}
+
+        // only add content if it is present
+        if(content){
+            updateData.content = content
+        }
+
+        // only process image if it is present
         if(file){
             const fileUri = getDataUri(file)
-            photo = await cloudinary.uploader.upload(fileUri)
+            const photo = await cloudinary.uploader.upload(fileUri)
+            updateData.image = photo.secure_url
         }
-        const updateData = {content, user:req.id, image:photo.secure_url}
-        post = await Post.findByIdAndUpdate(postId, updateData, {returnDocument: "after"})
+
+        // now update the post
+        post = await Post.findByIdAndUpdate(
+            postId,
+            updateData,
+            { returnDocument: 'after'}
+        ).populate({
+            path: 'user',
+            select: "-password"
+        })
+
         return res.status(200).json({
             success: true,
-            message: "Post updated successfully"
+            message: "Post updated successfully",
+            post
         })
 
     } catch (error) {
