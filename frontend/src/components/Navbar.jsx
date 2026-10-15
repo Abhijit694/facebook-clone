@@ -32,6 +32,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const { theme } = useSelector(store => store.theme)
+  const {user} = useSelector(state => state.auth)
 
 
   const logoutHandler = async () => {
@@ -98,9 +99,6 @@ const Navbar = () => {
         {/* Right section - profile & icons */}
         <div className="flex items-center justify-end space-x-4 w-[200px]">
           <div className="flex justify-center items-center bg-gray-300 size-9 rounded-full dark:bg-[#323233]">
-            <CgMenuGridR className="text-2xl text-gray-900 dark:text-gray-200 cursor-pointer hover:text-blue-600 hidden md:block" />
-          </div>
-          <div className="flex justify-center items-center bg-gray-300 size-9 rounded-full dark:bg-[#323233]">
             <HiBell className="text-2xl text-gray-900 dark:text-gray-200 cursor-pointer hover:text-blue-600 hidden md:block" />
           </div>
           <DropdownMenu>
@@ -109,7 +107,7 @@ const Navbar = () => {
                 <div className="size-3.75 absolute rounded-full bg-gray-200 dark:bg-[#323233] outline-2 outline-white dark:outline-[#262829] bottom-0 right-0 flex items-center justify-center">
                   <IoIosArrowDown className="text-[13px] text-gray-700 dark:text-gray-200"/>
                 </div>
-                <AvatarImage src={userLogo} />
+                <AvatarImage src={ user?.profilePicture || userLogo} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
