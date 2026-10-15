@@ -17,7 +17,7 @@ const MidHome = () => {
         { withCredentials: true }
       )
       if(response.data.success){
-        dispatch(setPosts(response.data.posts))
+        dispatch(setPosts(response.data.posts)) 
       }
     } catch (error) {
       console.log(error)
@@ -26,7 +26,7 @@ const MidHome = () => {
 
   useEffect(() => {
     getAllPost()
-  },[])
+  },[posts])
 
   return (
     <div className='pt-16 md:pl-95 bg-[#f2f4f7] dark:bg-[#1b1b1c] flex-1 justify-center px-3 md:px-0'>
