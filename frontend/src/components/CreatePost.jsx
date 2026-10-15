@@ -29,6 +29,7 @@ const CreatePost = () => {
   const [file, setFile] = useState("")
   const [imagePreview, setImagePreview] = useState("")
   const imageRef = useRef()
+  const [isLoading, setIsLoading] = useState(false)
 
 
   const fileChangeHandler = async (e) => {
@@ -56,6 +57,7 @@ const CreatePost = () => {
       formData.append("file",file)
     }
     try {
+      setIsLoading(true)
       const response = await axios.post(
         `http://localhost:8000/api/v1/post/create`,
         formData,
@@ -83,6 +85,8 @@ const CreatePost = () => {
         type: "error",
         description: "Error to post"
       })
+    } finally {
+      setIsLoading(false)
     }
 
   }
@@ -168,7 +172,11 @@ const CreatePost = () => {
               </span>
             </div>
 
-            <button className="w-full py-2 text-white font-medium rounded-md bg-[#0866ff] hover:bg-[#0b60e9] cursor-pointer" onClick={submitHandler} >Post</button>
+            <button className="w-full py-2 text-white font-medium rounded-md bg-[#0866ff] hover:bg-[#0b60e9] cursor-pointer disabled:opacity-50" onClick={submitHandler} disabled={isLoading} >
+              {
+                isLoading ? "Please wait..." : "Post"
+              }
+            </button>
           </DialogContent>
         </Dialog>
 
