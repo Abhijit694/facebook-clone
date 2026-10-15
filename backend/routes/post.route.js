@@ -11,7 +11,7 @@ router.get('/getallpost', isAuthenticated, getAllPost)
 router.get('/getuserpost', isAuthenticated, getUserPost)
 router.get("/:userId", isAuthenticated, getPostByUserId)
 router.delete("/delete/:id", isAuthenticated, deletePost)
-router.put("/update-post/:postId", isAuthenticated, updatePost)
+router.put("/update-post/:postId", isAuthenticated, upload.single('file'), updatePost)
 router.get('/:id/like', isAuthenticated, likePost)
 router.get('/:id/dislike', isAuthenticated, disLikePost)
 
