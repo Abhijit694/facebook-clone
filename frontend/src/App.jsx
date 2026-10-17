@@ -11,22 +11,21 @@ import PostPage from './pages/PostPage'
 import AboutPage from './pages/AboutPage'
 import FriendsPage from './pages/FriendsPage'
 import PhotosPage from './pages/PhotosPage'
+import Reels from './pages/Reels'
 
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <ProtectedRoute><Layout/></ProtectedRoute>,
-    children: [
-      {
-        path: '/',
-        element: <Home/>
-      },
-      {
-        path: '/friends',
-        element:<Friends/>
-      }
-    ]
+    element: <ProtectedRoute><Navbar/><Layout/></ProtectedRoute>,
+  },
+  {
+    path: "/reels",
+    element: <><Navbar/><Reels/></>
+  },
+  {
+    path: "/friends",
+    element: <><Navbar/><Friends/></>
   },
   {
     path: '/login',
