@@ -1,5 +1,6 @@
 import CreatePost from '@/components/CreatePost'
 import Intro from '@/components/Intro'
+import Photos from '@/components/Photos'
 import PostCard from '@/components/PostCard'
 import React from 'react'
 import { useSelector } from 'react-redux'
@@ -12,6 +13,7 @@ const PostPage = () => {
         <div>
             {/* intro */}
             <Intro/>
+            <Photos posts={userProfile?.posts}/>
         </div>
         <div className='space-y-4' >
           <CreatePost/>
