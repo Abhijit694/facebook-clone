@@ -1,14 +1,12 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "/facebook-logo.png";
 import { FiSearch } from "react-icons/fi";
 import { GoHomeFill } from "react-icons/go";
 import { FaMoon, FaUserFriends } from "react-icons/fa";
 import { FaSun } from "react-icons/fa6";
 import { MdLogout, MdOutlineOndemandVideo } from "react-icons/md";
-import { BiStore } from "react-icons/bi";
 import { HiBell } from "react-icons/hi2";
-import { CgMenuGridR } from "react-icons/cg";
 import userLogo from "../assets/fb-user-profile.jpg"
 import { IoIosArrowDown } from "react-icons/io";
 // import { Button } from "@/components/ui/button";
@@ -30,10 +28,42 @@ import { setPosts } from "@/redux/postSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation()
   const dispatch = useDispatch()
   const { theme } = useSelector(store => store.theme)
   const {user} = useSelector(state => state.auth)
+  
+  // Determine active icon based on current route
+  const getActiveIconFromRoute = (pathname) => {
+    if(pathname === "/") return "home"
+    if(pathname === "/reels") return "reels"
+    if(pathname === "/friends") return "friends"
+    return "home"  // default value
+  }
+  
+  const [activeIcon, setActiveIcon] = useState(getActiveIconFromRoute(location.pathname))
 
+  
+  // change the activeIcon on every click
+  useEffect(() => {
+    setActiveIcon(getActiveIconFromRoute(location.pathname))
+  },[location.pathname])
+
+
+  const homeIconHandler = () => {
+    navigate("/")
+    console.log(activeIcon)
+  }
+
+  const reelsIconHandler = () => {
+    navigate("/reels")
+    console.log(activeIcon)
+  }
+
+  const friendsIconHandler = () => {
+    navigate("/friends")
+    console.log(activeIcon)
+  }
 
   const logoutHandler = async () => {
     try {
@@ -81,18 +111,15 @@ const Navbar = () => {
         </div>
 
         {/* Center section - navigation icons */}
-        <div className="hidden md:flex space-x-8 h-full">
-          <button className="border-b-3 border-blue-600 w-[100px] flex items-center justify-center">
-            <GoHomeFill className="text-3xl text-blue-600 cursor-pointer hover:text-blue-700" />
+        <div className="hidden md:flex h-full gap-1">
+          <button onClick={homeIconHandler} className={ `${activeIcon === "home" ? "border-b-3 border-blue-600 text-blue-600" : "rounded-lg text-gray-400 hover:bg-gray-100 cursor-pointer"} w-30 flex items-center justify-center`}>
+            <GoHomeFill className="text-2xl" />
           </button>
-          <button className="w-[100px] flex items-center justify-center hover:bg-gray-200/10 rounded lg transition-all">
-            <MdOutlineOndemandVideo className="text-3xl text-gray-400 cursor-pointer" />
+          <button onClick={reelsIconHandler} className={ `${activeIcon === "reels" ? "border-b-3 border-blue-600 text-blue-600" : "rounded-lg text-gray-400 hover:bg-gray-100 cursor-pointer"} w-30 flex items-center justify-center`}>
+            <MdOutlineOndemandVideo className="text-2xl" />
           </button>
-          <button className="w-[100px] flex items-center justify-center hover:bg-gray-200/10 rounded lg transition-all">
-            <FaUserFriends className="text-3xl text-gray-400 cursor-pointer" />
-          </button>
-          <button className="w-[100px] flex items-center justify-center hover:bg-gray-200/10 rounded lg transition-all">
-            <BiStore className="text-3xl text-gray-400 cursor-pointer" />
+          <button onClick={friendsIconHandler} className={ `${activeIcon === "friends" ? "border-b-3 border-blue-600 text-blue-600" : "rounded-lg text-gray-400 hover:bg-gray-100 cursor-pointer"} w-30 flex items-center justify-center`}>
+            <FaUserFriends className="text-2xl" />
           </button>
         </div>
 
@@ -113,8 +140,8 @@ const Navbar = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-56 text-black dark:text-white bg-white dark:bg-[#262829]'>
               <DropdownMenuGroup>
-                <DropdownMenuItem className='text-base cursor-pointer' >My Profile</DropdownMenuItem>
-                <DropdownMenuItem className='text-base cursor-pointer' >Friends</DropdownMenuItem>
+                <DropdownMenuItem className='text-base cursor-pointer' onClick={() => navigate(`/profile/${user._id}/post`)} >My Profile</DropdownMenuItem>
+                <DropdownMenuItem className='text-base cursor-pointer' onClick={() => navigate('/friends')} >Friends</DropdownMenuItem>
                 <DropdownMenuItem className='text-base cursor-pointer' >Settings</DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
