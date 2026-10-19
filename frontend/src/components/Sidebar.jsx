@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux'
 const menuItems = [
     {icon: friends, label: "Friends", click: "/friends"},
     {icon: groups, label: "Groups"},
-    {icon: reels, label: "Reels"},
+    {icon: reels, label: "Reels", click: "/reels"},
     {icon: market, label: "Marketplace"},
     {icon: feed, label: "Feeds"},
     {icon: dashboard, label: "Dashboard"}
@@ -28,7 +28,7 @@ const Sidebar = () => {
   return (
     <div className="bg-[#f2f4f7] dark:bg-[#1b1b1c] text-black dark:text-gray-300 h-screen px-1 p-4 w-70 hidden md:block fixed top-0 left-0 mt-12">
         {/* top logo */}
-        <Link to={`/profile/${user._id}`}>
+        <Link to={`/profile/${user._id}/post`}>
             <div className='flex items-center cursor-pointer gap-4 mt-2 hover:bg-gray-200 px-3 rounded-lg py-2 dark:hover:bg-[#323233]'>
                 <Avatar className='size-9'>
                     <AvatarImage src={user.profilePicture || userLogo} />
