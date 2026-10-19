@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
+import { toast } from "@/components/ui/toast"
 
 const monthNames = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"]
 
@@ -21,6 +22,7 @@ const SignUp = () => {
   const [dobDay, setDobDay] = useState("")
   const [dobMonth, setDobMonth] = useState("")
   const [dobYear, setDobYear] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
   const updateDateOfBirth = (day,month,year) => {
     if(day && month && year){
@@ -50,6 +52,7 @@ const SignUp = () => {
     e.preventDefault()
     console.log(formData)
     try {
+      setIsLoading(true)
       const response = await axios.post(
         `http://localhost:8000/api/v1/auth/register`,
         formData,
@@ -60,9 +63,19 @@ const SignUp = () => {
       )
       if(response.data.success){
         navigate('/login')
+        toast.add({
+          type: "success",
+          description: response.data.message
+        })
       }
     } catch (error) {
       console.log(error)
+      toast.add({
+        type: "error",
+        description: error.response.data.message
+      })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -137,7 +150,7 @@ const SignUp = () => {
                 <option value="">Year</option>
                 {
                   [...Array(50)].map((_,i) => (
-                    <option key={i} vlaue={String(2025 - i)}>{2025 - i}</option>
+                    <option key={i} value={String(2025 - i)}>{2025 - i}</option>
                   ))
                 }
               </select>
@@ -178,7 +191,7 @@ const SignUp = () => {
             name='password'
             value={formData.password}
             onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounder"
+            className="w-full p-2 border border-gray-300 rounded"
           />
           <input
             type="password"
@@ -189,7 +202,11 @@ const SignUp = () => {
             className="w-full p-2 border border-gray-300 rounded"
           />
 
-          <button type="submit" className="bg-green-600 text-white text-base font-bold py-2 w-[200px] px-7 rounded-lg hover:bg-green-700 mt-1 cursor-pointer">Sign Up</button>
+          <button type="submit" disabled={isLoading} className="bg-green-600 text-white text-base font-bold py-2 w-[200px] px-7 rounded-lg hover:bg-green-700 mt-1 cursor-pointer disabled:bg-green-200">
+            {
+              isLoading ? "Please wait..." : "Sign Up"
+            }
+          </button>
           <Link to={'/login'} className="text-blue-600 text-sm">Already have an account</Link>
 
         </form>
