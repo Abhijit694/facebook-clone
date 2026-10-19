@@ -38,7 +38,10 @@ const Navbar = () => {
     if(pathname === "/") return "home"
     if(pathname === "/reels") return "reels"
     if(pathname === "/friends") return "friends"
-    return "home"  // default value
+    if(pathname === "/friends/list") return "friends"
+    if(pathname === "/friends/requests") return "friends"
+    if(pathname === "/friends/sent-requests") return "friends"
+    return ""  // default value
   }
   
   const [activeIcon, setActiveIcon] = useState(getActiveIconFromRoute(location.pathname))
@@ -87,7 +90,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-white dark:bg-[#262829] shadow h-14 fixed w-full z-50 px-4 py-2 md:py-0 flex justify-between items-center">
+    <nav className="bg-white dark:bg-[#262829] shadow h-14 fixed top-0 w-full z-50 px-4 py-2 md:py-0 flex justify-between items-center">
       {/* <div className="px-4 py-2 md:py-0 flex justify-between items-center"> */}
         {/* left section - logo + search */}
         <div className="flex items-center space-x-3">
