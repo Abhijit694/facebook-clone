@@ -15,7 +15,7 @@ export const registerUser = async (req,res) => {
             })
         }
         if(password !== confirmPass){
-            return res,status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: "Password and confirm password didn't match"
             })
