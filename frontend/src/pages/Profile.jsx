@@ -166,8 +166,8 @@ const Profile = () => {
 
       
       <div className="bg-white dark:bg-[#262829] z-40 py-4">
-        <div className="max-w-240 mx-auto px-5 md:px-10 flex flex-col md:flex-row gap-2 md:gap-0 md:justify-between">
-          <div className="flex flex-col md:flex-row md:gap-5 md:items-center relative">
+        <div className="max-w-240 mx-auto px-5 md:px-10 flex flex-col md:flex-row gap-4 md:gap-2 md:items-center">
+          {/* <div className="flex flex-col md:flex-row "> */}
 
             <input type="file" className="hidden" ref={profilePicRef} onChange={handleProfilePicChange} />
             <DropdownMenu>
@@ -218,26 +218,54 @@ const Profile = () => {
             </Dialog>
 
             {/* name,friends */}
-            <div className="flex flex-col gap-0 w-60">
-              <h1 className="text-3xl font-bold">Abhijit Nayak</h1>
-              <span className="text-gray-900 dark:text-gray-200 mt-1 font-semibold">100 friends</span>
-              <span className="text-gray-600 dark:text-gray-400 mt-1">{ userProfile?.bio?.bioText || "" }</span>
+            <div className="flex-1">
+              <div className="flex flex-col" >
+                <div className="flex justify-between" >
+
+                  <div className="flex flex-col gap-0 w-60">
+                    <h1 className="text-3xl font-bold">{userProfile?.firstname} {userProfile?.lastname}</h1>
+                    <span className="text-gray-900 dark:text-gray-200 mt-1 font-semibold">{userProfile?.friends?.length} friends</span>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    {
+                      user?._id === userProfile?._id ? (
+                      <>
+                        <button className="bg-[#0866ff] hover:bg-[#0a54cb] flex items-center gap-2 cursor-pointer text-white px-2.5 py-1.5 rounded-md">
+                          <FaPlus/>
+                          <span>Add to story</span>
+                        </button>
+                        <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-100 dark:hover:bg-gray-200 flex items-center gap-2 cursor-pointer text-black px-2.5 py-1.5 rounded-md">
+                          <MdEdit/>
+                          <span>Edit profile</span>
+                        </button>
+                      </>
+                      ) : (
+                      <>
+                        <button className="bg-[#0866ff] hover:bg-[#0a54cb] flex items-center gap-2 cursor-pointer text-white px-2.5 py-1.5 rounded-md">
+                          <FaUserPlus/>
+                          <span>Add friend</span>
+                        </button>
+                        <button className="bg-[#0866ff] hover:bg-[#0a54cb] flex items-center gap-2 cursor-pointer text-white px-2.5 py-1.5 rounded-md">
+                          <span>Confirm Request</span>
+                        </button>
+                        <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-100 dark:hover:bg-gray-200 flex items-center gap-2 cursor-pointer text-black px-2.5 py-1.5 rounded-md">
+                          <span>Delete Request</span>
+                        </button>
+                      </>
+                      )
+                    }
+                  </div>
+                </div>
+
+
+                {/* bio */}
+                <div className="w-120">
+                  <p>{userProfile?.bio?.bioText || ""}</p>
+                </div>
+
+              </div>
             </div>
-          </div>
-          <div className="flex gap-2 items-center">
-            <button className="bg-[#0866ff] hover:bg-[#0a54cb] flex items-center gap-2 cursor-pointer text-white px-2.5 py-1.5 rounded-md">
-              <FaUserPlus/>
-              <span className="font-bold">Add friend</span>
-            </button>
-            <button className="bg-[#0866ff] hover:bg-[#0a54cb] flex items-center gap-2 cursor-pointer text-white px-2.5 py-1.5 rounded-md">
-              <FaPlus/>
-              <span className="font-bold">Add to story</span>
-            </button>
-            <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-100 dark:hover:bg-gray-200 flex items-center gap-2 cursor-pointer text-black px-2.5 py-1.5 rounded-md">
-              <MdEdit/>
-              <span className="font-bold">Edit profile</span>
-            </button>
-          </div>
+          {/* </div> */}
         </div>
 
         <hr className="mt-5 mb-2 max-w-240 mx-auto" />
@@ -247,10 +275,6 @@ const Profile = () => {
             className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer"
             onClick={() => navigate(`/profile/${userProfile._id}/post`)}
           >All</span>
-          <span
-            className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer"
-            onClick={() => navigate(`/profile/${userProfile._id}/about`)}
-          >About</span>
           <span
             className="hover:bg-gray-100 dark:hover:bg-[#3a3c3d] px-4 py-2 rounded-lg text-base text-gray-600 dark:text-gray-300 cursor-pointer"
             onClick={() => navigate(`/profile/${userProfile._id}/friends`)}
