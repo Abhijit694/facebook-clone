@@ -1,7 +1,6 @@
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
-import Home from './pages/Home'
 import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
 import Friends from './pages/Friends'
@@ -12,6 +11,9 @@ import AboutPage from './pages/AboutPage'
 import FriendsPage from './pages/FriendsPage'
 import PhotosPage from './pages/PhotosPage'
 import Reels from './pages/Reels'
+import AllFriends from './components/AllFriends'
+import FriendRequest from './components/FriendRequest'
+import SentFriendRequest from './components/SentFriendRequest'
 
 
 const router = createBrowserRouter([
@@ -25,7 +27,26 @@ const router = createBrowserRouter([
   },
   {
     path: "/friends",
-    element: <><Navbar/><Friends/></>
+    element: <><Navbar/><Friends/></>,
+    children: [
+      {
+        index: true,  // Just keep this for /friends
+        element: <AllFriends />
+      },
+      {
+        path: "list",
+        element: <AllFriends/>
+      },
+      {
+        path: "requests",
+        element: <FriendRequest/>
+      },
+      {
+        path: "sent-requests",
+        element: <SentFriendRequest/>
+      },
+
+    ]
   },
   {
     path: '/login',
