@@ -12,10 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogFooter
 } from "@/components/ui/dialog"
 import axios from "axios";
@@ -43,27 +41,27 @@ const Intro = () => {
     const arr1 = [
         {
             icon: <FaBriefcase/>,
-            text: `Works at ${userProfile.bio.workplace}`
+            text: `Works at ${userProfile?.bio?.workplace}`
         },
         {
             icon: <FaLocationDot className="text-[18px]" />,
-            text: `Lives in ${userProfile.bio.liveIn}`
+            text: `Lives in ${userProfile?.bio?.liveIn}`
         },
         {
             icon: <FaGraduationCap className="text-[18px]" />,
-            text: `Studied at ${userProfile.bio.education}`
+            text: `Studied at ${userProfile?.bio?.education}`
         },
         {
             icon: <MdHomeWork className="text-[18px]" />,
-            text: `From ${userProfile.bio.hometown}`
+            text: `From ${userProfile?.bio?.hometown}`
         },
         {
             icon: <FaPhone/>,
-            text: `${userProfile.bio.phone}`
+            text: `${userProfile?.bio?.phone}`
         },
         {
             icon: <FaHeart/>,
-            text: `${userProfile.bio.relationship}`
+            text: `${userProfile?.bio?.relationship}`
         },
     ]
 
