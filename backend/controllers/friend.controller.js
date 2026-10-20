@@ -116,3 +116,44 @@ export const acceptFriendRequest = async (req,res) => {
     }
 
 }
+
+export const deleteFriendRequest = async (req,res) => {
+    try {
+        const receiverId = req.id
+        const senderId = req.params.id
+
+        const [sender, receiver] = await Promise.all([
+            User.findById(senderId),
+            User.findById(receiverId)
+        ])
+        if(!sender || !receiver){
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            })
+        }
+
+        // Check if request exists
+        if (!receiver.friendRequests.includes(senderId)) {
+            return res.status(400).json({
+                success: false,
+                message: "No pending request"
+            });
+        }
+
+        sender.sentRequests = sender.sentRequests.filter(id => id.toString() !== receiverId)
+        receiver.friendRequests = receiver.friendRequests.filter(id => id.toString() !== senderId)
+
+        await Promise.all([sender.save(), receiver.save()])
+        return res.status(200).json({
+            success: true,
+            message: "Request rejected"
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        })
+    }
+}
