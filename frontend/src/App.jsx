@@ -64,7 +64,7 @@ const router = createBrowserRouter([
     </ProtectedRoute>,
     children: [
       {
-        path: 'post',
+        index: true,
         element: <PostPage/>
       },
       {
