@@ -199,3 +199,94 @@ export const cancelFriendRequest = async (req,res) => {
         })
     }
 }
+
+export const getAllFriendRequests = async (req,res) => {
+    try {
+        const userId = req.id
+    
+        const user = await User.findById(userId).populate({
+            path: "friendRequests",
+            select: "firstname lastname profilePicture"
+        })
+    
+        if(!user){
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            })
+        }
+    
+        return res.status(200).json({
+            success: true,
+            friendRequests: user?.friendRequests,
+            message: "ll friend requests fetched"
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        })
+    }
+
+}
+
+export const getAllSentRequests = async (req,res) => {
+    try {
+        const userId = req.id
+        const user = await User.findById(userId)
+        .populate("sentRequests", "firstname lastname profilePicture")
+
+        if(!user){
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            sentRequests: user?.sentRequests,
+            message: "All sent requests fetched"
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        })
+    }
+}
+
+export const getAllFriends = async (req, res) => {
+    try {
+        const userId = req.id;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        // Get total count for hasMore logic
+        const totalFriends = user.friends.length;
+
+        // Fetch paginated friends
+        const friends = await User.find({ _id: { $in: user.friends } })
+            .skip(skip)
+            .limit(limit)
+            .select("firstname lastname profilePicture");
+
+        return res.status(200).json({
+            success: true,
+            friends,
+            hasMore: skip + limit < totalFriends,
+            message: "Friends fetched successfully"
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+};
