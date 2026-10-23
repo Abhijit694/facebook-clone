@@ -27,6 +27,7 @@ import { readFileAsDataURL } from "@/lib/utils";
 import { FaEarthAmericas } from "react-icons/fa6";
 import { TiArrowSortedDown, TiVideo } from "react-icons/ti";
 import { RxCross2 } from "react-icons/rx";
+import { Link } from "react-router-dom";
 
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ const PostCard = ({ post }) => {
   const [file, setFile] = useState(post?.image);
   const imageRef = useRef();
   const [isLoading, setIsLoading] = useState(false)
+  const isUserPost = post?.user?._id.toString() === user?._id.toString()
 
   const fileChangeHandler = async (e) => {
     const file = e.target.files?.[0];
@@ -187,28 +189,30 @@ const PostCard = ({ post }) => {
             <AvatarImage src={post?.user?.profilePicture || userLogo} />
           </Avatar>
           <div className="flex flex-col gap-0">
-            <span className="text-base text-black dark:text-white font-medium">
+            <Link to={`/profile/${post?.user?._id}`} className="text-base text-black dark:text-white font-medium hover:underline">
               {post?.user?.firstname} {post?.user?.lastname}
-            </span>
+            </Link>
             <TimeAgo
               className="text-sm text-gray-500"
               createdAt={post?.createdAt}
             />
           </div>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <div className="size-9 hover:bg-gray-200 dark:hover:bg-[#373a3b] rounded-full flex items-center justify-center cursor-pointer">
-              <BsThreeDots className="text-xl" />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => setIsEditPostOpen(true)}>Edit</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => deletePostHandler(post._id)}>
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {
+          isUserPost && (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="size-9 hover:bg-gray-200 dark:hover:bg-[#373a3b] rounded-full flex items-center justify-center cursor-pointer">
+                  <BsThreeDots className="text-xl" />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent> 
+                <DropdownMenuItem onClick={() => setIsEditPostOpen(true)}>Edit</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => deletePostHandler(post._id)}>Delete</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )
+        }
 
         {/* Edit post dialog */}
         <Dialog
