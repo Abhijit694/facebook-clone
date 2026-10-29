@@ -1,13 +1,27 @@
 import mongoose from "mongoose";
 
 
+const reelCommentSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
+    commentText: {
+        type: String,
+        required: true
+    }
+},{ timestamps: true })
+
+
+
 const reelSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
-    media: {
+    video: {
         type: String,
         required: true
     },
@@ -18,10 +32,7 @@ const reelSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }],
-    comments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    }]
+    comments: [reelCommentSchema]               // Embedded subdocuments
 },{ timestamps: true })
 
 
